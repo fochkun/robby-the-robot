@@ -1,3 +1,45 @@
 <p>
   data-entry works!
 </p>
+<div class="entry container">
+  <div class="pole-info column">
+    <div class="input-block">
+      <h2>Enter rows</h2>
+      <div class="row" *ngIf='!(mazeInfo==undefined)'>
+        <button (click)="addRows(-1)">-</button>
+        <p class="infoText">{{mazeInfo.rows}}</p>
+        <button (click)="addRows(1)">+</button>
+      </div>
+    </div>
+
+    <div class="input-block">
+      <h2>Enter columns</h2>
+      <div class="row" *ngIf='!(mazeInfo==undefined)'>
+        <button (click)="addColumns(-1)">-</button>
+        <p class="infoText">{{mazeInfo.columns}}</p>
+        <button (click)="addColumns(1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pole-info column">
+      <div class="input-block">
+        <h2>Enter energy</h2>
+        <div class="row" *ngIf='!(mazeInfo==undefined)'>
+          <button (click)="addEnergy(-1)">-</button>
+          <p class="infoText">{{mazeInfo.energy}}</p>
+          <button (click)="addEnergy(1)">+</button>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="pole container">
+  <div class="pole-container">
+    <div class="pole-column" *ngFor="let column of mazeInfo.maze; let idx = index">
+        <div class="pole-row" *ngFor="let row of column; let jdx = index" (click)="toggleTile(idx,jdx)">{{row}}
+            <!-- <div class="pole-row" *ngFor="let tile of row">tile</div> -->
+
+        </div>
+    </div>
+  </div>
+</div>
