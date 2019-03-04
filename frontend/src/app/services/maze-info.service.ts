@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '../model/pole-utils';
+import { GuardsCheckStart } from '@angular/router';
 
 @Injectable()
 export class MazeInfoService {
@@ -78,6 +79,24 @@ export class MazeInfoService {
       ? this.poleNumberTypes[this.poleTypes[plate] + 1]
       : this.poleNumberTypes[0];
     this.maze[point.x][point.y] = nextPlate === 'S' || nextPlate === 'F' || nextPlate === '.' || nextPlate === '#' ? nextPlate : '.';
+    if (this.checkSymbolRepeating(point, ['S', 'F'])) {
+      this.togglePlate(point);
+    }
+  }
+
+  /**
+   * 
+   * 
+   * @param point 
+   * @param checkArray 
+   * @returns true, if any symbol of checkArray symbols con
+   */
+  checkSymbolRepeating(point: Point, checkArray: Array<'S' | 'F' | '.' | '#'>): boolean {
+    this.maze.indexOf(checkArray[0]);
+    for (let idx = 0; idx < this.maze.length; idx++) {
+
+    }
+    return false;
   }
 
 
