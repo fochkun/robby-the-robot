@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Point } from '../model/pole-utils';
+import { Point, Fields } from '../model/pole-utils';
 import { GuardsCheckStart } from '@angular/router';
 
 @Injectable()
@@ -12,15 +12,19 @@ export class MazeInfoService {
   private _rows = 2;
   private _columns = 2;
   public energy = 1;
-  private maze: Array<Array<'S' | 'F' | '.' | '#'>> = [[]];
+  private _maze: Array<Array<Fields>> = [[]];
 
   // I can use enum, but I wan't
-  poleTypes = { 'S': 0, 'F': 1, '.': 2, '#': 3 };
-  poleNumberTypes: Array<string> = ['S', 'F', '.', '#'];
+  poleTypes = {};
+  poleNumberTypes: Array<string> = [Fields.start, Fields.target, Fields.walkable, Fields.blocked];
 
 
   constructor() {
     this.redrawMaze();
+    this.poleTypes[Fields.start] = 0;
+    this.poleTypes[Fields.target] = 1;
+    this.poleTypes[Fields.walkable] = 2;
+    this.poleTypes[Fields.blocked] = 3;
   }
 
   public set rows(val: number) {
@@ -44,42 +48,50 @@ export class MazeInfoService {
     return this._columns;
   }
 
+  public get maze(): Array<Array<Fields>> {
+    return this._maze;
+  }
+
   public redrawMaze() {
 
     //check columns
-    if (this.maze.length > this._columns) {
-      this.maze.length = this._columns;
+    if (this._maze.length > this._columns) {
+      this._maze.length = this._columns;
     } else {
-      for (let idx = this.maze.length; idx < this._columns; idx++) {
-        this.maze.push([]);
+      for (let idx = this._maze.length; idx < this._columns; idx++) {
+        this._maze.push([]);
       }
     }
 
     //check rows
-    for (let column of this.maze) {
+    for (let column of this._maze) {
       if (column.length > this._rows) {
         column.length = this._rows;
       } else {
         for (let idx = column.length; idx < this._rows; idx++) {
-          column.push('.');
+          column.push(Fields.walkable);
         }
       }
     }
-    console.log({ maze: this.maze });
+    console.log({ maze: this._maze });
   }
 
   togglePlate(point: Point) {
     console.log('toggle tile');
 
-    const plate = this.maze[point.x][point.y];
+    const plate = this._maze[point.x][point.y];
     if (plate == undefined) {
       return;
     }
     const nextPlate = this.poleTypes[plate] + 1 < this.poleNumberTypes.length
       ? this.poleNumberTypes[this.poleTypes[plate] + 1]
       : this.poleNumberTypes[0];
-    this.maze[point.x][point.y] = nextPlate === 'S' || nextPlate === 'F' || nextPlate === '.' || nextPlate === '#' ? nextPlate : '.';
-    if (this.checkSymbolRepeating(point, ['S', 'F'])) {
+    this._maze[point.x][point.y] = nextPlate === Fields.start
+      || nextPlate === Fields.target
+      || nextPlate === Fields.walkable
+      || nextPlate === Fields.blocked
+      ? nextPlate : Fields.walkable;
+    if (this.checkSymbolRepeating(point, [Fields.start, Fields.target])) {
       this.togglePlate(point);
     }
   }
@@ -91,10 +103,20 @@ export class MazeInfoService {
    * @param checkArray 
    * @returns true, if any symbol of checkArray symbols con
    */
-  checkSymbolRepeating(point: Point, checkArray: Array<'S' | 'F' | '.' | '#'>): boolean {
-    this.maze.indexOf(checkArray[0]);
-    for (let idx = 0; idx < this.maze.length; idx++) {
-
+  checkSymbolRepeating(point: Point, checkArray: Array<Fields>): boolean {
+    // tslint:disable-next-line:forin
+    for (let symbolIndex in checkArray) {
+      let repeat = 0;
+      for (let column of this._maze) {
+        for (let plate of column) {
+          if (plate == checkArray[symbolIndex]) {
+            repeat += 1;
+          }
+          if (repeat >= 2) {
+            return true;
+          }
+        }
+      }
     }
     return false;
   }

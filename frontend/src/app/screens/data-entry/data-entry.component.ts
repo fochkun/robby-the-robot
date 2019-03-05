@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MazeInfoService } from '../../services/maze-info.service';
 import { FormControl } from '@angular/forms';
+import { MazeSolver } from '../../hero/maze-solver';
 
 @Component({
   selector: 'app-data-entry',
@@ -38,6 +39,11 @@ export class DataEntryComponent implements OnInit {
   }
   toggleTile(x: number, y: number) {
     this.mazeInfo.togglePlate({ x, y });
+  }
+
+  findExit(){
+    console.log('try to find exit');
+    new MazeSolver(this.mazeInfo).solveMaze(this.mazeInfo.maze);
   }
 
 }
