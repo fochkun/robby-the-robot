@@ -13,12 +13,11 @@ export class RobbyTheRobotComponent implements OnInit {
 
 
   constructor() {
-    const own = this;
     this.direction = createDirection();
     // some closures
-    this.actions[Actions.moveForvard] = () => { own.moveForvard(); };
-    this.actions[Actions.turnLeft] = () => { own.rotateLeft(); };
-    this.actions[Actions.turnRight] = () => { own.rotateRight(); };
+    this.actions[Actions.moveForvard] = () => { this.moveForvard(); };
+    this.actions[Actions.turnLeft] = () => { this.rotateLeft(); };
+    this.actions[Actions.turnRight] = () => { this.rotateRight(); };
 
   }
 
@@ -40,11 +39,14 @@ export class RobbyTheRobotComponent implements OnInit {
 
   rotateLeft() {
     if (this.direction.rotateLeft) {
+      // console.log('rotate left', this.direction);
       this.direction = this.direction.rotateLeft;
+      // console.log('rotate left:after', this.direction);
     }
   }
 
   moveForvard() {
+    console.log('hero moved forward');
     this.position.x += this.direction.modifier.x;
     this.position.y += this.direction.modifier.y;
   }

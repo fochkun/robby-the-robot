@@ -11,7 +11,7 @@ export class MazeInfoService {
   public readonly maxColumns = 10;
   private _rows = 2;
   private _columns = 2;
-  public energy = 1;
+  public energy = 5;
   private _maze: Array<Array<Fields>> = [[]];
 
   // I can use enum, but I wan't
@@ -54,7 +54,7 @@ export class MazeInfoService {
 
   public redrawMaze() {
 
-    //check columns
+    // check columns
     if (this._maze.length > this._columns) {
       this._maze.length = this._columns;
     } else {
@@ -63,7 +63,7 @@ export class MazeInfoService {
       }
     }
 
-    //check rows
+    // check rows
     for (let column of this._maze) {
       if (column.length > this._rows) {
         column.length = this._rows;
@@ -73,7 +73,6 @@ export class MazeInfoService {
         }
       }
     }
-    console.log({ maze: this._maze });
   }
 
   togglePlate(point: Point) {
@@ -97,10 +96,10 @@ export class MazeInfoService {
   }
 
   /**
-   * 
-   * 
-   * @param point 
-   * @param checkArray 
+   *
+   *
+   * @param point
+   * @param checkArray
    * @returns true, if any symbol of checkArray symbols con
    */
   checkSymbolRepeating(point: Point, checkArray: Array<Fields>): boolean {
