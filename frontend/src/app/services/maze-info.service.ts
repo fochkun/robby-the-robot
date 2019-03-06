@@ -7,7 +7,7 @@ import { Transition } from '../model/maze-solver';
 export class MazeInfoService {
 
   public readonly minRows = 2;
-  public readonly maxRows = 20;
+  public readonly maxRows = 18;
   public readonly minColumns = 2;
   public readonly maxColumns = 10;
   public solution: Transition[][];

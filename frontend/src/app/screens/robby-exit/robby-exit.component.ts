@@ -9,10 +9,12 @@ import { RobbyTheRobotComponent } from '../../hero/robby-the-robot/robby-the-rob
   templateUrl: './robby-exit.component.html',
   styleUrls: ['./robby-exit.component.less']
 })
-export class RobbyExitComponent implements OnInit,AfterViewInit {
+export class RobbyExitComponent implements OnInit, AfterViewInit {
 
+  public robbyActionSpeed = 200;
   public title = '';
   private mazeSolver: MazeSolver;
+  private isActing = false;
   public iocContainer: { robby: RobbyTheRobotComponent } = { robby: new RobbyTheRobotComponent() };
 
   constructor(public mazeInfo: MazeInfoService) {
@@ -21,16 +23,20 @@ export class RobbyExitComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    this.isActing = false;
   }
-  ngAfterViewInit(){
-    const startPoint=this.mazeSolver.findStartPlate(this.mazeInfo.maze)
-    this.iocContainer.robby.position={x:startPoint.x,y:startPoint.y};
+  ngAfterViewInit() {
+    const startPoint = this.mazeSolver.findStartPlate(this.mazeInfo.maze);
+    this.iocContainer.robby.position = { x: startPoint.x, y: startPoint.y };
   }
   exitMaze() {
     let actions = this.mazeSolver.getSolutionSteps(this.mazeInfo.solution);
-    this.makeActions(actions);
+    if (!this.isActing) {
+      this.makeActions(actions);
+    }
   }
   makeActions(actions: Transition[]) {
+    this.isActing = true;
     if (actions.length == 0) {
       return;
     }
@@ -40,7 +46,9 @@ export class RobbyExitComponent implements OnInit,AfterViewInit {
     if (actions.length > 0) {
       setTimeout(() => {
         this.makeActions(actions);
-      }, 2000);
+      }, this.robbyActionSpeed);
+    } else {
+      this.isActing = false;
     }
   }
 

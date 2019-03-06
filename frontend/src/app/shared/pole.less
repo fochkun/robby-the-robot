@@ -1,3 +1,19 @@
+
+@button-active-color: #356445;
+@button-text-size: 18px;
+@button-font-family: "Ubuntu Regular";
+
+
+.responsive(@minWidth,@maxWidth, @rules) {
+    @media only screen and (min-width: @minWidth) and (max-width: @maxWidth) {
+      @rules();
+    }
+}
+.responsiveMin(@minWidth, @rules) {
+    @media only screen and (min-width: @minWidth) {
+      @rules();
+    }
+}
 .pole-column{
     display: block;
 }
@@ -15,4 +31,47 @@
 }
 .exit-button{
     margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: block;
+}
+button {
+    //width: 100%;
+    border: none;
+    background-color: @button-active-color;
+    color:white;
+    font-size: @button-text-size;
+    font-family: @button-font-family;
+    padding: 5px 15px;
+    border-radius: 30px;
+    outline: none;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    &:hover{
+        background-color: #469260;
+    }
+}
+
+h1{
+    text-align: center;
+}
+
+
+.container{
+    display: block;
+    overflow: auto;
+    .responsiveMin(1280px, {
+        position: relative;
+        width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+    });
+    .column{
+        display: inline-block;
+        width: 290px;
+        margin-left: 15px;
+        margin-right: 15px;
+        float: left;
+    }
 }

@@ -1,6 +1,4 @@
-<p>
-  data-entry works!
-</p>
+<h1>Enter initial data for Robby</h1>
 <div class="entry container">
   <div class="pole-info column">
     <div class="input-block">
@@ -11,15 +9,17 @@
         <button (click)="addRows(1)">+</button>
       </div>
     </div>
+  </div>
 
+  <div class="pole-info column">
     <div class="input-block">
-      <h2>Enter columns</h2>
-      <div class="row" *ngIf='!(mazeInfo==undefined)'>
-        <button (click)="addColumns(-1)">-</button>
-        <p class="infoText">{{mazeInfo.columns}}</p>
-        <button (click)="addColumns(1)">+</button>
+        <h2>Enter columns</h2>
+        <div class="row" *ngIf='!(mazeInfo==undefined)'>
+          <button (click)="addColumns(-1)">-</button>
+          <p class="infoText">{{mazeInfo.columns}}</p>
+          <button (click)="addColumns(1)">+</button>
+        </div>
       </div>
-    </div>
   </div>
 
   <div class="pole-info column">
