@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MazeInfoService } from '../../services/maze-info.service';
 import { FormControl } from '@angular/forms';
 import { MazeSolver } from '../../model/maze-solver';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-data-entry',
@@ -10,7 +11,7 @@ import { MazeSolver } from '../../model/maze-solver';
 })
 export class DataEntryComponent implements OnInit {
 
-  constructor(public mazeInfo: MazeInfoService) {
+  constructor(public mazeInfo: MazeInfoService, private _router:Router) {
     console.log('rows', mazeInfo.rows);
   }
 
@@ -40,7 +41,8 @@ export class DataEntryComponent implements OnInit {
 
   findExit() {
     console.log('try to find exit');
-    new MazeSolver(this.mazeInfo).solveMaze(this.mazeInfo.maze);
+    this.mazeInfo.solution = new MazeSolver(this.mazeInfo).solveMaze(this.mazeInfo.maze);
+    this._router.navigate(['exit']);
   }
 
 }

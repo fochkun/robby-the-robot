@@ -1,8 +1,25 @@
 .hero-container{
     width: 50px;
     height: 50px;
+    padding-top: 8px;
+    transition: all 2s;
+    position: absolute;
+    
     img{
         max-width: 50px;
         max-height: 50px;
     }
+}
+.down{
+    transform: rotate(90deg);
+}
+.up{
+    transform: rotate(-90deg);
+}
+.left{
+    transform: rotate(180deg);
+    //transform: scaleX(-1);
+}
+.right{
+    transform: rotate(0deg)
 }

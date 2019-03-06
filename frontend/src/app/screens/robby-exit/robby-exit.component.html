@@ -1,3 +1,18 @@
-<p>
-  robby-exit works!
-</p>
+<h1>
+  {{title}}
+</h1>
+<div class="pole container">
+  <app-robby-the-robot [control]="iocContainer"></app-robby-the-robot>
+  <div class="pole-container">
+    <div class="pole-column" *ngFor="let column of mazeInfo.maze; let idx = index">
+        <div class="pole-row" *ngFor="let row of column; let jdx = index">{{row}}
+            <!-- <div class="pole-row" *ngFor="let tile of row">tile</div> -->
+
+        </div>
+    </div>
+  </div>
+</div>
+<div class='button-bar'>
+  <button class='some-button'>show variants</button>
+  <button class='some-button' (click)='exitMaze()'>show solution</button>
+</div>

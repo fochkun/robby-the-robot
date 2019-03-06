@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { Point, Direction, createDirection, Actions } from '../../model/pole-utils';
 
 @Component({
@@ -6,8 +6,13 @@ import { Point, Direction, createDirection, Actions } from '../../model/pole-uti
   templateUrl: './robby-the-robot.component.html',
   styleUrls: ['./robby-the-robot.component.less']
 })
-export class RobbyTheRobotComponent implements OnInit {
-  public position: Point;
+export class RobbyTheRobotComponent implements OnInit, AfterViewInit {
+
+  @Input('control') robbyIOC: { robby: RobbyTheRobotComponent };
+
+  private readonly offset = 50;
+
+  private _position: Point;
   public direction: Direction;
   private actions: { [action: string]: () => void } = {};
 
@@ -23,14 +28,36 @@ export class RobbyTheRobotComponent implements OnInit {
 
   public get forvardPosition(): Point {
     return {
-      x: this.position.x + this.direction.modifier.x,
-      y: this.position.y + this.direction.modifier.y
+      x: this._position.x + this.direction.modifier.x,
+      y: this._position.y + this.direction.modifier.y
     };
+  }
+
+  public set position(val: Point) {
+    this._position = val;
+    this.update();
+  }
+  public get position(): Point {
+    return this._position;
   }
 
   ngOnInit() {
   }
+  ngAfterViewInit() {
+    this.robbyIOC.robby = this;
+    console.log('robby is in ioc');
+  }
 
+  update() {
+    const robby = document.getElementById('robby-container');
+    console.log('update, robby is', robby);
+    if (robby) {
+      robby.setAttribute("style", "top:" + (this.position.y * this.offset) +
+        "px; left: " + (this.position.x * this.offset) + "px;");
+      // robby.style.top = '' + (this.position.y * this.offset) + ' px';
+      // robby.style.left = '' + (this.position.x * this.offset) + ' px';
+    }
+  }
   rotateRight() {
     if (this.direction.rotateRight) {
       this.direction = this.direction.rotateRight;
@@ -47,8 +74,9 @@ export class RobbyTheRobotComponent implements OnInit {
 
   moveForvard() {
     console.log('hero moved forward');
-    this.position.x += this.direction.modifier.x;
-    this.position.y += this.direction.modifier.y;
+    this._position.x += this.direction.modifier.x;
+    this._position.y += this.direction.modifier.y;
+    this.update();
   }
 
   makeAction(action: Actions): boolean {

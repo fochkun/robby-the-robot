@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Point, Fields } from '../model/pole-utils';
 import { GuardsCheckStart } from '@angular/router';
+import { Transition } from '../model/maze-solver';
 
 @Injectable()
 export class MazeInfoService {
@@ -9,6 +10,7 @@ export class MazeInfoService {
   public readonly maxRows = 20;
   public readonly minColumns = 2;
   public readonly maxColumns = 10;
+  public solution: Transition[][];
   private _rows = 2;
   private _columns = 2;
   public energy = 5;

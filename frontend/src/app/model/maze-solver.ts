@@ -5,6 +5,15 @@ import { tick } from '@angular/core/testing';
 import { transition } from '@angular/core';
 
 const ACTIONS = [Actions.moveForvard, Actions.turnLeft, Actions.turnRight];
+
+export const Solutions = {
+    0: 'Robby can\'t exit',
+    1: 'Robby have no energy to exit',
+    2: 'Robby have find the exit',
+    noExit: 0,
+    noEnergy: 1,
+    exitFind: 2,
+}
 export class MazeSolver {
     private maze: Array<Array<MazeDirectionalPlate>>;
     private mazeSteps: Array<Array<Transition>> = [];
@@ -74,26 +83,62 @@ export class MazeSolver {
             ++this.step;
         }
         console.log({ mazeSteps: this.mazeSteps, maze: this.maze });
-        const lastSteps = this.mazeSteps[this.mazeSteps.length - 1];
-        if (lastSteps[lastSteps.length - 1].isFinal) {
-            alert('robby has exit');
-            let result = '';
-            let recursiveResult: (transition: Transition) => void = (winTransition: Transition) => {
-                if (winTransition.action) {
-                    result += winTransition.action;
-                }
-                if (winTransition.prev) {
-                    recursiveResult(winTransition.prev);
-                }
-            };
-            recursiveResult(lastSteps[lastSteps.length - 1]);
-            alert(result.split('').reverse().join(''));
-            if (this.mazeInfo.energy < result.length) {
-                alert('but robby have no enought energy');
-            }
-        } else {
+        return this.mazeSteps;
+    }
 
+
+    /**
+     * check's maze steps array for solution
+     * @param mazeStepsArray 
+     * @returns number from Solutions
+     */
+    public checkSolution(mazeStepsArray: Transition[][]): number {
+        let result = Solutions.noExit;
+        const lastSteps = mazeStepsArray[mazeStepsArray.length - 1];
+        if (lastSteps[lastSteps.length - 1].isFinal) {
+            result = Solutions.exitFind;
+            const solution = this.getSolutionString(mazeStepsArray);
+            if (this.mazeInfo.energy < solution.length) {
+                result = Solutions.noEnergy;
+            }
         }
+        return result;
+    }
+
+    public getSolutionString(mazeStepsArray: Transition[][]): string {
+        let resultWay = this.getSolutionSteps(mazeStepsArray);
+        let result = resultWay.reduce((sum, current) => {
+            return sum + current.action;
+        }, '');
+        console.log({result,resultWay});
+        // const lastSteps = mazeStepsArray[mazeStepsArray.length - 1];
+        // let recursiveResult: (transition: Transition) => void = (winTransition: Transition) => {
+        //     if (winTransition.action) {
+        //         resultWay += winTransition.action;
+        //     }
+        //     if (winTransition.prev) {
+        //         recursiveResult(winTransition.prev);
+        //     }
+        // };
+        // recursiveResult(lastSteps[lastSteps.length - 1]);
+        // return resultWay.split('').reverse().join('');
+        return result
+
+    }
+
+    public getSolutionSteps(mazeStepsArray: Transition[][]): Transition[] {
+        let resultWay: Transition[] = [];
+        const lastSteps = mazeStepsArray[mazeStepsArray.length - 1];
+        let recursiveResult: (transition: Transition) => void = (winTransition: Transition) => {
+            if (winTransition.action) {
+                resultWay.push(winTransition);
+            }
+            if (winTransition.prev) {
+                recursiveResult(winTransition.prev);
+            }
+        };
+        recursiveResult(lastSteps[lastSteps.length - 1]);
+        return resultWay.reverse();
 
     }
 
@@ -163,7 +208,7 @@ export class MazeSolver {
 
     }
 
-    private findStartPlate(maze: Array<Array<Fields>>): Point {
+    public findStartPlate(maze: Array<Array<Fields>>): Point {
         // tslint:disable-next-line:forin
         for (const columnIndex in maze) {
             const column = maze[columnIndex];
@@ -206,4 +251,5 @@ export interface Transition {
     isFinal: boolean;
     prev?: Transition;
 }
+
 
