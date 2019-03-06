@@ -31,6 +31,7 @@ export class RobbyExitComponent implements OnInit, AfterViewInit {
   }
   exitMaze() {
     let actions = this.mazeSolver.getSolutionSteps(this.mazeInfo.solution);
+    actions.length = this.mazeInfo.energy < actions.length ? this.mazeInfo.energy : actions.length;
     if (!this.isActing) {
       this.makeActions(actions);
     }
