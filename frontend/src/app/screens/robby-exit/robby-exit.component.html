@@ -7,6 +7,10 @@
     <div class="pole-column" *ngFor="let column of mazeInfo.maze; let idx = index">
         <div class="pole-row" *ngFor="let row of column; let jdx = index">{{row}}
             <!-- <div class="pole-row" *ngFor="let tile of row">tile</div> -->
+            <img *ngIf="row=='S'" src="../../../assets/images/start.jpg" alt="">
+            <img *ngIf="row=='T'" src="../../../assets/images/finish.jpg" alt="">
+            <img *ngIf="row=='.'" src="../../../assets/images/road.jpg" alt="">
+            <img *ngIf="row=='#'" src="../../../assets/images/obstacle.jpg" alt="">
 
         </div>
     </div>
