@@ -10,6 +10,8 @@ export class RobbyTheRobotComponent implements OnInit, AfterViewInit {
 
   @Input('control') robbyIOC: { robby: RobbyTheRobotComponent };
 
+  public visible=true;
+
   private readonly offset = 50;
 
   private _position: Point;

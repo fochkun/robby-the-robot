@@ -18,12 +18,12 @@ export class DataEntryComponent implements OnInit {
   ngOnInit() {
   }
 
-  addRows(val: number) {
+  addColumn(val: number) {
     this.mazeInfo.rows = this.mazeInfo.rows + val;
     this.redrawMaze();
   }
 
-  addColumns(val: number) {
+  addRows(val: number) {
     this.mazeInfo.columns = this.mazeInfo.columns + val;
     this.redrawMaze();
   }

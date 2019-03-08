@@ -110,7 +110,7 @@ export class MazeSolver {
         let result = resultWay.reduce((sum, current) => {
             return sum + current.action;
         }, '');
-        console.log({result,resultWay});
+        console.log({ result, resultWay });
         // const lastSteps = mazeStepsArray[mazeStepsArray.length - 1];
         // let recursiveResult: (transition: Transition) => void = (winTransition: Transition) => {
         //     if (winTransition.action) {
@@ -166,8 +166,9 @@ export class MazeSolver {
 
         const checkPosition = this.mockRobby.position;
         const checkDirection = this.mockRobby.direction;
-        if (this.maze[checkPosition.y][checkPosition.x][checkDirection.name] > this.step + 1) { // point potential comparation
-            this.maze[checkPosition.y][checkPosition.x][checkDirection.name] = this.step + 1;
+        const point = this.maze[checkPosition.y][checkPosition.x];
+        if (point[checkDirection.name] > this.step + 1) { // point potential comparation
+            point[checkDirection.name] = this.step + 1;
         }
     }
 

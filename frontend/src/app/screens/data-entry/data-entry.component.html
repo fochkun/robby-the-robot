@@ -2,22 +2,22 @@
 <div class="entry container">
   <div class="pole-info column">
     <div class="input-block">
-      <h2>Enter rows</h2>
+      <h2>Enter columns</h2>
       <div class="row" *ngIf='!(mazeInfo==undefined)'>
-        <button (click)="addRows(-1)">-</button>
+        <button (click)="addColumn(-1)">-</button>
         <p class="infoText">{{mazeInfo.rows}}</p>
-        <button (click)="addRows(1)">+</button>
+        <button (click)="addColumn(1)">+</button>
       </div>
     </div>
   </div>
 
   <div class="pole-info column">
     <div class="input-block">
-        <h2>Enter columns</h2>
+        <h2>Enter rows</h2>
         <div class="row" *ngIf='!(mazeInfo==undefined)'>
-          <button (click)="addColumns(-1)">-</button>
+          <button (click)="addRows(-1)">-</button>
           <p class="infoText">{{mazeInfo.columns}}</p>
-          <button (click)="addColumns(1)">+</button>
+          <button (click)="addRows(1)">+</button>
         </div>
       </div>
   </div>
